@@ -4,13 +4,14 @@ public class Flashcard {
 
     private String term;
     private String definition;
+    private int mistakes;
 
 
-    public Flashcard( String term, String definition){
+    public Flashcard( String term, String definition,int mistakes){
 
         this.term=term;
         this.definition=definition;
-
+        this.mistakes=mistakes;
 
     }
 
@@ -20,7 +21,9 @@ public class Flashcard {
     public String getDefinition(){
         return definition;
     }
-
+ public int getMistakes(){
+        return mistakes;
+ }
 
 
     public void setTerm(String term){
@@ -31,6 +34,12 @@ public class Flashcard {
         this.definition=definition;
     }
 
+    public void setMiskates(int mistakes){
+        this.mistakes=mistakes;
+    }
+public void sumMistake(){
+        mistakes++;
+}
 
 
 

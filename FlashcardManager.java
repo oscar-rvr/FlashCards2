@@ -5,13 +5,14 @@ import java.util.*;
 
 public class FlashcardManager {
     private Map<String,Flashcard> flashcards;
-
+//log
+    private List<String> logList = new ArrayList<>();
     public FlashcardManager(){
         this.flashcards = new HashMap<>();
     }
 
     public void addCard(String term, String definition){
-        Flashcard card = new Flashcard(term,definition);
+        Flashcard card = new Flashcard(term,definition,0);
         flashcards.put(term,card);
 
     }
@@ -35,9 +36,11 @@ public boolean existDefinition(String definition){
     public void removeCard(String term){
         if (flashcards.containsKey(term)){
             flashcards.remove(term);
-            System.out.println("The card has been removed.");
+            //System.out.println("The card has been removed.");
+            printLogMessage("The card has been removed.");
         }else {
-            System.out.println("Can't remove \"" + term + "\": there is no such card.");
+            //System.out.println("Can't remove \"" + term + "\": there is no such card.");
+            printLogMessage("Can't remove \"" + term + "\": there is no such card.");
         }
     }
 
@@ -52,12 +55,17 @@ public boolean existDefinition(String definition){
             System.out.println("Print the definition of \"" + randomTerm + "\":");
             String userAnswer = scanner.nextLine();
             if (userAnswer.equals(card.getDefinition())) {
-                System.out.println("Correct!");
+                //System.out.println("Correct!");
+                printLogMessage("Correct!");
             } else if(!whereDefinition(userAnswer).isEmpty()) {
-                System.out.println("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
+                //System.out.println("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
+                printLogMessage("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
+
             }else{
-                System.out.println("Wrong. The right answer is \"" + card.getDefinition() + "\".");
+                //System.out.println("Wrong. The right answer is \"" + card.getDefinition() + "\".");
                // System.out.println(!whereDefinition(userAnswer).isEmpty());
+                printLogMessage("Wrong. The right answer is \"" + card.getDefinition() + "\".");
+                card.sumMistake();
             }
         }
 
@@ -87,7 +95,8 @@ public boolean existDefinition(String definition){
             throw new RuntimeException(e);
 
         }
-        System.out.println(getCardCount()+" cards have been saved.");
+        //System.out.println(getCardCount()+" cards have been saved.");
+        printLogMessage(getCardCount()+" cards have been saved.");
     }
 
     public void importF(String filename){
@@ -107,14 +116,78 @@ public boolean existDefinition(String definition){
                 contI++;
                 addCard(term,definition);
             }
-            System.out.println(contI+" cards have been loaded.");
+            //System.out.println(contI+" cards have been loaded.");
+            printLogMessage(contI+" cards have been loaded.");
         } catch (IOException e) {
             //throw new RuntimeException(e);
-            System.out.println("File not found.");
+           //System.out.println("File not found.");
+            printLogMessage("File not found.");
         }
+    }
+    public void hardestCard(){
+       if(flashcards.isEmpty()){
+           //System.out.println("There are no cards with errors.");
+           printLogMessage("There are no cards with errors.");
+           return;
+       }
+
+       int maxMistakes=0;
+       List<String> hardestCards=new ArrayList<>();
+       for (Map.Entry<String,Flashcard> entry : flashcards.entrySet()){
+           Flashcard card=entry.getValue();
+           int cardMistakes= card.getMistakes();
+
+           if(cardMistakes>maxMistakes){
+               maxMistakes=cardMistakes;
+               hardestCards.clear();
+               hardestCards.add(card.getTerm());
+
+           }else if(cardMistakes == maxMistakes){
+               hardestCards.add(card.getTerm());
+           }
+
+
+       }
+
+       if(maxMistakes==0){
+
+           //System.out.println("There are no cards with errors.");
+           printLogMessage("There are no cards with errors.");
+       }else{
+           List<String> quotedCards = new ArrayList<>();
+           for (String card : hardestCards){
+               quotedCards.add("\""+ card +"\"");
+           }
+           String cardList = String.join(",", quotedCards); // Convierte la lista en una cadena con los términos separados por ", "
+           printLogMessage("The hardest cards is \"" + cardList + "\". You have " + maxMistakes + " errors answering them.");
+           //System.out.println("The hardest cards are \"" + cardList + "\". You have " + maxMistakes + " errors answering them.");
+       }
+
+
     }
     public int getCardCount(){
         return flashcards.size();
+    }
+
+    public void printLogMessage(String log){
+        logList.add(log);
+        System.out.println(log);
+    }
+    public void saveLogMessage(String line){
+        logList.add(line);
+    }
+    public void writeLog(String filename){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
+            for(String line : logList){
+                writer.write(line);
+                writer.newLine();
+            }
+            printLogMessage("The log has been saved.");
+        } catch (IOException e) {
+
+            printLogMessage("An error occurred while saving the log.");
+            throw new RuntimeException(e);
+        }
     }
 
 }
