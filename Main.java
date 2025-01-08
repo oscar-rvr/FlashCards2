@@ -38,7 +38,8 @@ public class Main {
                         //System.out.println("The definition \""+definition+"\" already exists.");
                         manager.printLogMessage("The definition \""+definition+"\" already exists.");
                     }else{
-                        manager.addCard(term, definition);
+                        int mistakes=0;
+                        manager.addCard(term, definition,mistakes);
 
                        // System.out.println("The pair (\"" + term + "\":\"" + definition + "\") has been added.");
                         manager.printLogMessage("The pair (\"" + term + "\":\"" + definition + "\") has been added.");
@@ -84,10 +85,16 @@ public class Main {
                 manager.hardestCard();
 
             }else if(action.equals("log")){
+                manager.printLogMessage("File name:");
                String filename = scan.nextLine();
 
                manager.saveLogMessage(filename);
+
+
                manager.writeLog(filename);
+            }
+            else if(action.equals("reset stats")){
+                manager.resetStats();
             }
 
 
