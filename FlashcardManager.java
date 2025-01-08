@@ -5,8 +5,7 @@ import java.util.*;
 
 public class FlashcardManager {
     private Map<String,Flashcard> flashcards;
-//log
-    private List<String> logList = new ArrayList<>();
+     private List<String> logList = new ArrayList<>();
     public FlashcardManager(){
         this.flashcards = new HashMap<>();
     }
@@ -36,11 +35,9 @@ public boolean existDefinition(String definition){
     public void removeCard(String term){
         if (flashcards.containsKey(term)){
             flashcards.remove(term);
-            //System.out.println("The card has been removed.");
-            printLogMessage("The card has been removed.");
+             printLogMessage("The card has been removed.");
         }else {
-            //System.out.println("Can't remove \"" + term + "\": there is no such card.");
-            printLogMessage("Can't remove \"" + term + "\": there is no such card.");
+             printLogMessage("Can't remove \"" + term + "\": there is no such card.");
         }
     }
 
@@ -55,16 +52,12 @@ public boolean existDefinition(String definition){
             System.out.println("Print the definition of \"" + randomTerm + "\":");
             String userAnswer = scanner.nextLine();
             if (userAnswer.equals(card.getDefinition())) {
-                //System.out.println("Correct!");
-                printLogMessage("Correct!");
+                 printLogMessage("Correct!");
             } else if(!whereDefinition(userAnswer).isEmpty()) {
-                //System.out.println("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
-                printLogMessage("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
-card.sumMistake();
+                 printLogMessage("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
+                    card.sumMistake();
             }else{
-                //System.out.println("Wrong. The right answer is \"" + card.getDefinition() + "\".");
-               // System.out.println(!whereDefinition(userAnswer).isEmpty());
-                printLogMessage("Wrong. The right answer is \"" + card.getDefinition() + "\".");
+                 printLogMessage("Wrong. The right answer is \"" + card.getDefinition() + "\".");
                 card.sumMistake();
             }
         }
@@ -89,20 +82,17 @@ card.sumMistake();
                       writer.write(term+","+definition+","+mistakes);
                       writer.write("\n");
             }
-           // writer.close();
-            writer.flush();
+             writer.flush();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
 
         }
-        //System.out.println(getCardCount()+" cards have been saved.");
-        printLogMessage(getCardCount()+" cards have been saved.");
+         printLogMessage(getCardCount()+" cards have been saved.");
     }
 
     public void importF(String filename){
- //flashcards.clear();
-        try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
+         try(BufferedReader reader = new BufferedReader(new FileReader(filename))){
             String line;
 
 
@@ -119,18 +109,14 @@ card.sumMistake();
                 contI++;
                 addCard(term,definition,mistakes);
             }
-            //System.out.println(contI+" cards have been loaded.");
-            printLogMessage(contI+" cards have been loaded.");
+             printLogMessage(contI+" cards have been loaded.");
         } catch (IOException e) {
-            //throw new RuntimeException(e);
-           //System.out.println("File not found.");
-            printLogMessage("File not found.");
+             printLogMessage("File not found.");
         }
     }
     public void hardestCard(){
        if(flashcards.isEmpty()){
-           //System.out.println("There are no cards with errors.");
-           printLogMessage("There are no cards with errors.");
+            printLogMessage("There are no cards with errors.");
            return;
        }
 
@@ -154,8 +140,7 @@ card.sumMistake();
 
        if(maxMistakes==0){
 
-           //System.out.println("There are no cards with errors.");
-           printLogMessage("There are no cards with errors.");
+            printLogMessage("There are no cards with errors.");
        }else{
            List<String> quotedCards = new ArrayList<>();
            for (String card : hardestCards){
@@ -170,8 +155,7 @@ card.sumMistake();
 
            }
 
-           //System.out.println("The hardest cards are \"" + cardList + "\". You have " + maxMistakes + " errors answering them.");
-       }
+        }
 
 
     }
