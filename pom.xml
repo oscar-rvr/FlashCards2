@@ -35,17 +35,17 @@
                     <execution>
                         <phase>verify</phase>
                         <goals>
-                            <goal>spotbugs</goal> <!-- Ejecuta el análisis -->
+                            <goal>spotbugs</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/spotbugs</outputDirectory> <!-- Carpeta de salida -->
-                            <htmlOutput>true</htmlOutput> <!-- Genera el reporte HTML -->
-                            <xmlOutput>true</xmlOutput> <!-- Genera el reporte XML -->
+                            <outputDirectory>${project.build.directory}/spotbugs</outputDirectory>
+                            <htmlOutput>true</htmlOutput>
+                            <xmlOutput>true</xmlOutput>
                             <plugins>
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
                                     <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>1.12.0</version> <!-- Última versión estable -->
+                                    <version>1.12.0</version>
                                 </plugin>
                             </plugins>
                         </configuration>
@@ -65,6 +65,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.19.0</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>pmd</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <rulesets>
                         <ruleset>rulesets/java/quickstart.xml</ruleset>
@@ -78,18 +86,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.0</version>
-                <configuration>
-                    <configLocation>src/main/resources/checkstyle.xml</configLocation>
-                </configuration>
                 <executions>
                     <execution>
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <configLocation>src/main/resources/checkstyle.xml</configLocation>
+                </configuration>
             </plugin>
-
         </plugins>
     </build>
 
@@ -101,9 +109,9 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.4.2</version>
                 <configuration>
-                    <outputDirectory>${project.build.directory}/spotbugs</outputDirectory> <!-- Directorio de salida -->
-                    <htmlOutput>true</htmlOutput> <!-- Repor HTML -->
-                    <xmlOutput>true</xmlOutput> <!-- Reporte XML -->
+                    <outputDirectory>${project.build.directory}/spotbugs</outputDirectory>
+                    <htmlOutput>true</htmlOutput>
+                    <xmlOutput>true</xmlOutput>
                     <plugins>
                         <plugin>
                             <groupId>com.h3xstream.findsecbugs</groupId>
