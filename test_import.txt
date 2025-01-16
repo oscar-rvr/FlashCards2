@@ -1,0 +1,2 @@
+term1,definition1,0
+term2,definition2,1

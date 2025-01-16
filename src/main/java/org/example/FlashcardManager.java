@@ -26,6 +26,12 @@ public class FlashcardManager {
 
     }
 
+    //@VisibleForTesting
+    public List<String> getlogList() {
+        return logList;
+    }
+
+
     public boolean existsTerm(String term) {
         if(flashcards.containsKey(term)) {
             return true;
