@@ -18,15 +18,11 @@
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
-        <repository>
-            <id>findsecbugs-repo</id>
-            <url>https://dl.bintray.com/h3xstream/findsecbugs</url>
-        </repository>
     </repositories>
 
     <build>
         <plugins>
-            <!-- Configuración para SpotBugs -->
+            <!-- Configuración para SpotBugs con FindSecBugs -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
@@ -35,22 +31,24 @@
                     <execution>
                         <phase>verify</phase>
                         <goals>
-                            <goal>spotbugs</goal>
+                            <goal>check</goal>
                         </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/spotbugs</outputDirectory>
-                            <htmlOutput>true</htmlOutput>
-                            <xmlOutput>true</xmlOutput>
-                            <plugins>
-                                <plugin>
-                                    <groupId>com.h3xstream.findsecbugs</groupId>
-                                    <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>1.12.0</version>
-                                </plugin>
-                            </plugins>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <failOnError>true</failOnError>
+                    <effort>Max</effort>
+
+                    <threshold>High</threshold>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>1.12.0</version>
+                        </plugin>
+
+                    </plugins>
+                </configuration>
             </plugin>
 
             <!-- Limpieza del proyecto -->
@@ -78,6 +76,7 @@
                         <ruleset>rulesets/java/quickstart.xml</ruleset>
                     </rulesets>
                     <targetJdk>17</targetJdk>
+                    <failOnViolation>true</failOnViolation>
                 </configuration>
             </plugin>
 
@@ -96,6 +95,7 @@
                 </executions>
                 <configuration>
                     <configLocation>src/main/resources/checkstyle.xml</configLocation>
+                    <failOnViolation>true</failOnViolation>
                 </configuration>
             </plugin>
         </plugins>
@@ -103,25 +103,6 @@
 
     <reporting>
         <plugins>
-            <!-- Plugin para generar el reporte de SpotBugs -->
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.4.2</version>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/spotbugs</outputDirectory>
-                    <htmlOutput>true</htmlOutput>
-                    <xmlOutput>true</xmlOutput>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.h3xstream.findsecbugs</groupId>
-                            <artifactId>findsecbugs-plugin</artifactId>
-                            <version>1.12.0</version>
-                        </plugin>
-                    </plugins>
-                </configuration>
-            </plugin>
-
             <!-- Reporte de Checkstyle -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -131,6 +112,29 @@
                     <configLocation>src/main/resources/checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
+
+            <!-- Reporte de PMD -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.21.0</version>
+                <configuration>
+                    <rulesets>
+                        <ruleset>category/java/bestpractices.xml</ruleset>
+                        <ruleset>category/java/codestyle.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
         </plugins>
     </reporting>
+
+    <dependencies>
+        <!-- Dependencia de JUnit para pruebas -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

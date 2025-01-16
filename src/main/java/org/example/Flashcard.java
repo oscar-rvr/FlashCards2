@@ -18,15 +18,17 @@ public class Flashcard {
     public String getTerm(){
         return term;
     }
+
     public String getDefinition(){
         return definition;
     }
- public int getMistakes(){
+
+    public int getMistakes() {
         return mistakes;
- }
+    }
 
 
-    public void setTerm(String term){
+    public void setTerm(String term) {
         this.term = term;
     }
 
@@ -34,16 +36,14 @@ public class Flashcard {
         this.definition=definition;
     }
 
-    public void setMiskates(int mistakes){
+    public void setMiskates(int mistakes) {
         this.mistakes=mistakes;
+
     }
-public void sumMistake(){
+
+    public void sumMistake() {
         mistakes++;
-}
 
-
-
-
-
+    }
 
 }
