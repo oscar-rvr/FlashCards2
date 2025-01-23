@@ -18,6 +18,8 @@ public class FlashcardManager {
     public FlashcardManager(){
                 this.flashcards = new HashMap<>();
             }
+            
+            
 
     public void addCard(String term, String definition,int mistakes){
 
@@ -31,12 +33,10 @@ public class FlashcardManager {
         return logList;
     }
 
-
     public boolean existsTerm(String term) {
         if(flashcards.containsKey(term)) {
             return true;
         }
-
         return false;
     }
 
@@ -46,11 +46,8 @@ public class FlashcardManager {
                 return true;
             }
         }
-
         return false;
-
     }
-
 
     public void removeCard(String term){
         if (flashcards.containsKey(term)){
@@ -62,14 +59,14 @@ public class FlashcardManager {
         }
 
     public void askCard(int times) {
+        Scanner scanner = new Scanner(System.in, "UTF-8");
         for (int i =0; i< times; i++){
             String[] terms = flashcards.keySet().toArray(new String[0]);
             String randomTerm = terms[rand.nextInt(terms.length)];
             Flashcard card = flashcards.get(randomTerm);
-
-            Scanner scanner = new Scanner(System.in, "UTF-8");
             System.out.println("Print the definition of \"" + randomTerm + "\":");
             String userAnswer = scanner.nextLine();
+
             if (userAnswer.equals(card.getDefinition())) {
                 printLogMessage("Correct!");
             } else if(!whereDefinition(userAnswer).isEmpty()) {
@@ -79,9 +76,9 @@ public class FlashcardManager {
                      printLogMessage("Wrong. The right answer is \"" + card.getDefinition() + "\".");
                     card.sumMistake();
                 }
-            }
-
         }
+
+    }
 
     public String whereDefinition(String definition){
         for(Map.Entry<String, Flashcard> entry : flashcards.entrySet()){
@@ -89,7 +86,7 @@ public class FlashcardManager {
                 return entry.getValue().getTerm().toString();
             }
         }
-            return "";
+        return "";
     }
 
 
@@ -105,18 +102,15 @@ public class FlashcardManager {
                     writer.write("\n");
                 }
                     writer.flush();
-
             } catch (Exception e) {
                     throw new RuntimeException(e);
-                }
-
-            printLogMessage(getCardCount()+" cards have been saved.");
-
-        }else{
-                printLogMessage(getCardCount()+"Not allowed access.");
             }
-
+            printLogMessage(getCardCount()+" cards have been saved.");
+        }else{
+            printLogMessage(getCardCount()+"Not allowed access.");
         }
+
+    }
 
     public void importF(String filename){
         if(allowed(filename)){
@@ -131,7 +125,6 @@ public class FlashcardManager {
                     definition=cardReaded[1];
                     mistakes= Integer.parseInt(cardReaded[2]);
 
-
                     contI++;
                     addCard(term,definition,mistakes);
                 }
@@ -141,8 +134,8 @@ public class FlashcardManager {
             }
         }else{
                 printLogMessage("Error");
-            }
         }
+    }
 
     public void hardestCard(){
         int maxMistakes=0;
@@ -181,8 +174,6 @@ public class FlashcardManager {
                    printLogMessage("The hardest cards are " + cardList + ". You have " + maxMistakes + " errors answering them.");
                }
            }
-
-
     }
 
     public boolean allowed(String userPath) {
@@ -239,9 +230,8 @@ public class FlashcardManager {
             }else{
                 printLogMessage("Error");
             }
-
-
         }
+
         public void resetStats(){
             flashcards.clear();
             printLogMessage("Card statistics have been reset.");

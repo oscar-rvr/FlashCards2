@@ -16,7 +16,7 @@ public class FlashcardTest {
     }
 
     @Test
-    void givenNewValues_whenSettersCalled_thenValuesAreUpdated() {
+    void givenNewValues_whenSettersCalled_thenValuesAreUpdated(){
         Flashcard card = new Flashcard("term1", "definition1", 0);
 
         card.setTerm("newTerm");
@@ -27,7 +27,6 @@ public class FlashcardTest {
         assertEquals("newDefinition", card.getDefinition());
         assertEquals(5, card.getMistakes());
     }
-
 
     @Test
     void givenFlashcard_whenSumMistakeCalled_thenMisktakesAreIncremented(){
