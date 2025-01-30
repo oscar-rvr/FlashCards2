@@ -132,7 +132,7 @@ public class FlashcardManager {
             } catch (IOException e) {
                  printLogMessage("File not found.");
             }
-        }else{
+        } else {
                 printLogMessage("Error");
         }
     }
