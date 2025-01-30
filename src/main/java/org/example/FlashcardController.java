@@ -18,7 +18,7 @@ public class FlashcardController {
             case "import" -> handleImport();
             case "export" -> handleExport();
             case "ask" -> handleAsk();
-            case "hardest cards" -> manager.hardestCard();
+            case "hardest card" -> manager.hardestCard();
             case "log" -> handleLog();
             case "reset stats" -> manager.resetStats();
             case "exit" -> manager.printLogMessage("Bye Bye");

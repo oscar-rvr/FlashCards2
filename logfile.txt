@@ -1,0 +1,108 @@
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+add
+The card:
+a
+The definition of the card:
+a
+The pair ("a":"a") has been added.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+add
+The card:
+tree
+The definition of the card:
+arbol
+The pair ("tree":"arbol") has been added.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+remove
+Which card?
+tree
+The card has been removed.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+log
+File name:
+output
+The log has been saved.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+
+Unknow command
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+add
+The card:
+blue
+The definition of the card:
+azul
+The pair ("blue":"azul") has been added.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+add
+The card:
+blue
+The card "blue" already exists.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+azul
+Unknow command
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+add
+The card:
+black
+The definition of the card:
+negro
+The pair ("black":"negro") has been added.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+ask
+How many times to ask?
+2
+Correct!
+Correct!
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+ask
+How many times to ask?
+2
+Correct!
+Correct!
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+hardest card
+Unknow command
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+hardest
+Unknow command
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+hardest cards
+There are no cards with errors.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+ask
+How many times to ask?
+2
+Wrong. The right answer is "a".
+Wrong. The right answer is "azul".
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+hardest card
+Unknow command
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+hardest card
+Unknow command
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+hardest cards
+The hardest cards are "a","blue". You have 1 errors answering them.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+log
+File name:
+logfile.txt
