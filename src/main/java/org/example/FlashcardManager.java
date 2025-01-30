@@ -106,7 +106,7 @@ public class FlashcardManager {
                     throw new RuntimeException(e);
             }
             printLogMessage(getCardCount()+" cards have been saved.");
-        }else{
+        } else {
             printLogMessage(getCardCount()+"Not allowed access.");
         }
 
