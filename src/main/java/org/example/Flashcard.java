@@ -1,22 +1,22 @@
 package org.example;
 
 public class Flashcard {
+
     private String term;
     private String definition;
     private int mistakes;
 
-    public Flashcard(String term, String definition,int mistakes) {
+    public Flashcard(String term, String definition, int mistakes){
         this.term = term;
         this.definition = definition;
         this.mistakes = mistakes;
-
     }
 
-    public String getTerm() {
+    public String getTerm(){
         return term;
     }
 
-    public String getDefinition() {
+    public String getDefinition(){
         return definition;
     }
 
@@ -28,7 +28,7 @@ public class Flashcard {
         this.term = term;
     }
 
-    public void setDefinition(String definition) {
+    public void setDefinition(String definition){
         this.definition = definition;
     }
 
@@ -37,7 +37,7 @@ public class Flashcard {
     }
 
     public void sumMistake() {
-        mistakes ++;
+        mistakes++;
     }
 
 }
