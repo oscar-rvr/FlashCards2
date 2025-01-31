@@ -1,36 +1,47 @@
 import org.example.Flashcard;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FlashcardTest {
 
+    private static final String INITIAL_TERM = "term1";
+    private static final String INITIAL_DEFINITION = "definition1";
+    private static final String NEW_TERM = "newTerm";
+    private static final String NEW_DEFINITION = "newDefinition";
+    private Flashcard card;
+
+
+    @BeforeEach
+    void setUp() {
+
+        card = new Flashcard(INITIAL_TERM, INITIAL_DEFINITION, 0);
+    }
 
     @Test
     void givenFlashcardAttributes_whenInitialized_thenValuesAreSetCorrectly(){
-        Flashcard card = new Flashcard("term1", "definition1", 0);
 
-        assertEquals("term1", card.getTerm());
-        assertEquals("definition1", card.getDefinition());
+
+        assertEquals(INITIAL_TERM, card.getTerm());
+        assertEquals(INITIAL_DEFINITION, card.getDefinition());
         assertEquals(0, card.getMistakes());
     }
 
     @Test
     void givenNewValues_whenSettersCalled_thenValuesAreUpdated(){
-        Flashcard card = new Flashcard("term1", "definition1", 0);
 
-        card.setTerm("newTerm");
+        card.setTerm(NEW_TERM);
         card.setDefinition("newDefinition");
-        card.setMiskates(5);
+        card.setMistakes(5);
 
-        assertEquals("newTerm", card.getTerm());
-        assertEquals("newDefinition", card.getDefinition());
+        assertEquals(NEW_TERM, card.getTerm());
+        assertEquals(NEW_DEFINITION, card.getDefinition());
         assertEquals(5, card.getMistakes());
     }
 
     @Test
     void givenFlashcard_whenSumMistakeCalled_thenMisktakesAreIncremented(){
-        Flashcard card = new Flashcard("term1","definition1",0);
 
         card.sumMistake();
         assertEquals(1,card.getMistakes());

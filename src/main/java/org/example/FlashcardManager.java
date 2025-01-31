@@ -18,14 +18,18 @@ public class FlashcardManager {
     public FlashcardManager(){
                 this.flashcards = new HashMap<>();
             }
-            
-            
 
-    public void addCard(String term, String definition,int mistakes){
 
-    Flashcard card = new Flashcard(term,definition,mistakes);
-    flashcards.put(term,card);
 
+    public void addCard(String term, String definition, int mistakes){
+        if (term == null || definition == null) {
+            throw new IllegalArgumentException("Term and definition cannot be null");
+        }
+        if (mistakes < 0) {
+            throw new IllegalArgumentException("Mistakes cannot be negative");
+        }
+        Flashcard card = new Flashcard(term, definition, mistakes);
+        flashcards.put(term, card);
     }
 
     //@VisibleForTesting
@@ -122,8 +126,8 @@ public class FlashcardManager {
                     int mistakes=0;
                     String[] cardReaded = line.split(",");
                     term=cardReaded[0];
-                    definition=cardReaded[1];
-                    mistakes= Integer.parseInt(cardReaded[2]);
+                    definition = cardReaded[1];
+                    mistakes = Integer.parseInt(cardReaded[2]);
 
                     contI++;
                     addCard(term,definition,mistakes);
@@ -137,16 +141,25 @@ public class FlashcardManager {
         }
     }
 
-    public void hardestCard(){
-        int maxMistakes=0;
-        List<String> hardestCards=new ArrayList<>();
-        List<String> quotedCards = new ArrayList<>();
+    public void hardestCard() {
+
         if(flashcards.isEmpty()){
             printLogMessage("There are no cards with errors.");
                return;
         }
 
 
+
+        List<String> hardestCards = findHardestCards();
+        int maxMistakes = findMaxMistakes();
+
+        printHardestCardsMessage(hardestCards,maxMistakes);
+    }
+
+    private List<String> findHardestCards(){
+        List<String> hardestCards=new ArrayList<>();
+
+        int maxMistakes=0;
         for (Map.Entry<String,Flashcard> entry : flashcards.entrySet()){
             Flashcard card=entry.getValue();
             int cardMistakes= card.getMistakes();
@@ -156,25 +169,43 @@ public class FlashcardManager {
                 hardestCards.clear();
                 hardestCards.add(card.getTerm());
 
-               }else if(cardMistakes == maxMistakes){
-                   hardestCards.add(card.getTerm());
-               }
-           }
+            }else if(cardMistakes == maxMistakes){
+                hardestCards.add(card.getTerm());
+            }
+        }
+        return hardestCards;
 
-           if(maxMistakes==0){
-               printLogMessage("There are no cards with errors.");
-           }else{
-               for (String card : hardestCards){
-                   quotedCards.add("\""+ card +"\"");
-               }
-               String cardList = String.join(",", quotedCards);
-               if(quotedCards.size()<2){
-                   printLogMessage("The hardest card is " + cardList + ". You have " + maxMistakes + " errors answering it.");
-               }else{
-                   printLogMessage("The hardest cards are " + cardList + ". You have " + maxMistakes + " errors answering them.");
-               }
-           }
+
     }
+
+    public void printHardestCardsMessage(List<String> hardestCards, int maxMistakes){
+
+        if(hardestCards.isEmpty()){
+            printLogMessage("There are no cards with errors.");
+        }else {
+            List<String> quotedCards = new ArrayList<>();
+            for (String card : hardestCards){
+                quotedCards.add("\""+ card +"\"");
+            }
+            String cardList = String.join(",", quotedCards);
+
+            if(quotedCards.size()<2){
+                printLogMessage("The hardest card is " + cardList + ". You have " + maxMistakes + " errors answering it.");
+            }else{
+                printLogMessage("The hardest cards are " + cardList + ". You have " + maxMistakes + " errors answering them.");
+            }
+        }
+    }
+
+    private int findMaxMistakes() {
+        int maxMistakes = 0;
+        for (Map.Entry<String, Flashcard> entry : flashcards.entrySet()) {
+            Flashcard card = entry.getValue();
+            maxMistakes = Math.max(maxMistakes, card.getMistakes());
+        }
+        return maxMistakes;
+    }
+
 
     public boolean allowed(String userPath) {
         Properties properties = new Properties();

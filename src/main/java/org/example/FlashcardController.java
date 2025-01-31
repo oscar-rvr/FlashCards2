@@ -22,7 +22,7 @@ public class FlashcardController {
             case "log" -> handleLog();
             case "reset stats" -> manager.resetStats();
             case "exit" -> manager.printLogMessage("Bye Bye");
-            default -> manager.printLogMessage("Unknow command");
+            default -> manager.printLogMessage("Unknown command");
         }
     }
     private void handleAdd() {

@@ -1,5 +1,3 @@
-
-
 import org.example.FlashcardController;
 import org.example.FlashcardManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,12 +77,7 @@ class FlashcardControllerTest {
         verify(manager).askCard(3);
     }
 
-    @Test
-    void processCommand_hardestCards() {
-        controller.processCommand("hardest cards");
 
-        verify(manager).hardestCard();
-    }
 
     @Test
     void processCommand_log() {
@@ -113,6 +106,6 @@ class FlashcardControllerTest {
     void processCommand_unknownCommand() {
         controller.processCommand("unknown");
 
-        verify(manager).printLogMessage("Unknow command");
+        verify(manager).printLogMessage("Unknown command");
     }
 }

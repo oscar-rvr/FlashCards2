@@ -34,7 +34,7 @@ public class Flashcard {
         this.definition=definition;
     }
 
-    public void setMiskates(int mistakes) {
+    public void setMistakes(int mistakes) {
         this.mistakes=mistakes;
     }
 
