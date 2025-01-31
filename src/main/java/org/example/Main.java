@@ -17,7 +17,6 @@ public class Main {
             }
         }
 
-
         if (importFile != null) manager.importF(importFile);
 
         // Main application loop
@@ -30,8 +29,9 @@ public class Main {
         } while (!"exit".equals(command));
 
         // Export if requested
-        if (exportFile != null) manager.export(exportFile);
-
+        if (exportFile != null) {
+            manager.export(exportFile);
+        }
 
     }
 }
