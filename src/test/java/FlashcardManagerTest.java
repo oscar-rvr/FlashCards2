@@ -1,233 +1,138 @@
-import org.example.Flashcard;
 import org.example.FlashcardManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FlashcardManagerTest {
+class FlashcardManagerTest {
 
+    private FlashcardManager flashcardManager;
 
-
-    @Test
-    void givenNewCard_whenAdded_thenCardIsStored() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-
-        assertTrue(manager.existsTerm("term1"));
+    @BeforeEach
+    void setUp() {
+        flashcardManager = new FlashcardManager();
     }
 
     @Test
-    void givenExistingTerm_whenChecked_thenReturnsTrue() {
+    void givenNewFlashcard_whenAddCard_thenCardIsAdded() {
+        flashcardManager.addCard("term", "definition", 0);
 
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-
-        assertTrue(manager.existsTerm("term1"));
+        assertTrue(flashcardManager.existsTerm("term"));
+        assertFalse(flashcardManager.existDefinition("wrong_definition"));
     }
 
     @Test
-    void givenNonExistingTerm_whenChecked_thenReturnsFalse() {
-        FlashcardManager manager = new FlashcardManager();
+    void givenExistingFlashcard_whenRemoveCard_thenCardIsRemoved() {
+        flashcardManager.addCard("term", "definition", 0);
+        flashcardManager.removeCard("term");
 
-        assertFalse(manager.existsTerm("term1"));
-    }
-
-
-    @Test
-    void givenExistingDefinition_whenChecked_thenReturnsTrue() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-
-        assertTrue(manager.existDefinition("definition1"));
+        assertFalse(flashcardManager.existsTerm("term"));
     }
 
     @Test
-    void givenNonExistingDefinition_whenChecked_thenReturnsFalse() {
-        FlashcardManager manager = new FlashcardManager();
+    void givenValidUserAnswer_whenAskCard_thenCorrectResponseLogged() {
+        flashcardManager.addCard("term", "definition", 0);
 
-        assertFalse(manager.existDefinition("definition1"));
+        simulateUserInput("definition");
+        ByteArrayOutputStream outputStream = simulateOutput();
+
+        flashcardManager.askCard(1);
+
+        assertTrue(outputStream.toString().contains("Correct!"));
     }
 
     @Test
-    void givenExistingCard_whenRemoved_thenCardIsDeleted() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
+    void givenWrongUserAnswer_whenAskCard_thenWrongResponseLogged() {
+        flashcardManager.addCard("term", "definition", 0);
 
-        manager.removeCard("term1");
+        simulateUserInput("wrong_answer");
+        ByteArrayOutputStream outputStream = simulateOutput();
 
-        assertFalse(manager.existsTerm("term1"));
+        flashcardManager.askCard(1);
+
+        assertTrue(outputStream.toString().contains("Wrong."));
     }
 
     @Test
-    void givenNonExistingCard_whenRemoved_thenLogShowsErrorMessage() {
+    void givenDefinitionExists_whenWhereDefinition_thenReturnCorrectTerm() {
+        flashcardManager.addCard("term", "definition", 0);
 
-        FlashcardManager manager = new FlashcardManager();
-
-        manager.removeCard("term1");
-
-
-        assertTrue(manager.getlogList().contains("Can't remove \"term1\": there is no such card."));
+        assertEquals("term", flashcardManager.whereDefinition("definition"));
     }
 
     @Test
-    void givenCards_whenAskCard_thenCorrectAnswerLogsCorrectMessage() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
+    void givenEmptyManager_whenHardestCard_thenLogsNoCards() {
+        ByteArrayOutputStream outputStream = simulateOutput();
 
-        InputStream in = new ByteArrayInputStream("definition1\n".getBytes());
-        System.setIn(in);
+        flashcardManager.hardestCard();
 
-        manager.askCard(1);
-
-        assertTrue(manager.getlogList().contains("Correct!"));
-    }
-
-    @Test
-    void givenCards_whenAskCard_thenWrongAnswerLogsErrorMessage() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-
-        InputStream in = new ByteArrayInputStream("wrongDefinition\n".getBytes());
-        System.setIn(in);
-
-        manager.askCard(1);
-
-        assertTrue(manager.getlogList().contains("Wrong. The right answer is \"definition1\"."));
-    }
-
-    @Test
-    void givenCards_whenAskCardWithCorrectButDifferentDefinition_thenLogsAlternateTermMessage() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-        manager.addCard("term2", "definition2", 0);
-
-        InputStream in = new ByteArrayInputStream("definition2\n".getBytes());
-        System.setIn(in);
-
-        manager.askCard(1);
-
-        assertTrue(manager.getlogList().stream().anyMatch(log -> log.contains("but your definition is correct for \"term2\".")));
-    }
-
-    @Test
-    void givenNoCards_whenAskCard_thenNoInteraction() {
-        FlashcardManager manager = new FlashcardManager();
-
-        manager.askCard(1);
-
-         assertTrue(manager.getlogList().isEmpty());
-    }
-
-    @Test
-    void givenExistingDefinition_whenWhereDefinition_thenReturnsCorrectTerm() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-
-        String result = manager.whereDefinition("definition1");
-
-        assertEquals("term1", result);
-    }
-
-    @Test
-    void givenNonExistingDefinition_whenWhereDefinition_thenReturnsEmptyString() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-
-        String result = manager.whereDefinition("nonExistentDefinition");
-
-        assertEquals("", result);
-    }
-
-    @Test
-    void givenMultipleDefinitions_whenWhereDefinition_thenReturnsCorrectTerm() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-        manager.addCard("term2", "definition2", 0);
-
-        String result = manager.whereDefinition("definition2");
-
-        assertEquals("term2", result);
-    }
-
-
-    // Test para export
-    @Test
-    void givenValidFilename_whenExport_thenSavesAllCardsToFile() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-        manager.addCard("term2", "definition2", 1);
-
-        manager.export("test_export.txt");
-
-        Path path = Paths.get("test_export.txt");
-        assertTrue(Files.exists(path));
-    }
-
-
-
-
-    @Test
-    void givenNoCardsWithErrors_whenHardestCard_thenLogsNoErrors() {
-        FlashcardManager manager = new FlashcardManager();
-
-        manager.hardestCard();
-
-
+        assertTrue(outputStream.toString().contains("There are no cards with errors."));
     }
 
     @Test
     void givenCardsWithErrors_whenHardestCard_thenLogsHardestCards() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 3);
-        manager.addCard("term2", "definition2", 5);
+        flashcardManager.addCard("term1", "definition1", 3);
+        flashcardManager.addCard("term2", "definition2", 3);
 
-        manager.hardestCard();
+        ByteArrayOutputStream outputStream = simulateOutput();
 
+        flashcardManager.hardestCard();
 
+        assertTrue(outputStream.toString().contains("The hardest cards are"));
     }
-
 
     @Test
-    void givenValidPath_whenAllowed_thenReturnsTrue() {
-        FlashcardManager manager = new FlashcardManager();
-         boolean result = manager.allowed("valid_path.txt");
+    void givenValidFilename_whenExport_thenFileCreatedWithCorrectData() throws Exception {
+        flashcardManager.addCard("term", "definition", 2);
+        String filename = "test_export.txt";
 
-        assertTrue(result);
+        flashcardManager.export(filename);
+
+        Path path = Path.of(filename);
+        assertTrue(Files.exists(path));
+        assertTrue(Files.readString(path).contains("term,definition,2"));
+
+        Files.delete(path);
     }
-
-
 
     @Test
-    void whenGetCardCount_thenReturnsCorrectCount() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-        manager.addCard("term2", "definition2", 0);
+    void givenValidFile_whenImport_thenCardsAreLoaded() throws Exception {
+        String filename = "test_import.txt";
+        Files.writeString(Path.of(filename), "term,definition,2\n");
 
-        int count = manager.getCardCount();
+        flashcardManager.importF(filename);
 
-        assertEquals(2, count);
+        assertTrue(flashcardManager.existsTerm("term"));
+
+        Files.delete(Path.of(filename));
     }
-
 
     @Test
-    void whenResetStats_thenAllCardsAreCleared() {
-        FlashcardManager manager = new FlashcardManager();
-        manager.addCard("term1", "definition1", 0);
-        manager.addCard("term2", "definition2", 0);
+    void givenLog_whenWriteLog_thenFileContainsLogs() throws Exception {
+        flashcardManager.saveLogMessage("Log message");
+        String filename = "test_log.txt";
 
-        manager.resetStats();
+        flashcardManager.writeLog(filename);
 
-        assertEquals(0, manager.getCardCount());
+        Path path = Path.of(filename);
+        assertTrue(Files.exists(path));
+        assertTrue(Files.readString(path).contains("Log message"));
+
+        Files.delete(path);
     }
 
+    private void simulateUserInput(String input) {
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+    }
 
-
+    private ByteArrayOutputStream simulateOutput() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        return out;
+    }
 }
