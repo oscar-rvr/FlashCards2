@@ -32,7 +32,6 @@ public class FlashcardManager {
         flashcards.put(term, card);
     }
 
-    //@VisibleForTesting
     public List<String> getlogList() {
         return logList;
     }
@@ -252,5 +251,4 @@ public class FlashcardManager {
         flashcards.clear();
         printLogMessage("Card statistics have been reset.");
     }
-
 }

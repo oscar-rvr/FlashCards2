@@ -77,8 +77,6 @@ class FlashcardControllerTest {
         verify(manager).askCard(3);
     }
 
-
-
     @Test
     void processCommand_log() {
         when(scanner.nextLine()).thenReturn("logfile.txt");

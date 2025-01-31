@@ -82,5 +82,4 @@ public class FlashcardController {
         manager.saveLogMessage(filename);
         manager.writeLog(filename);
     }
-
 }

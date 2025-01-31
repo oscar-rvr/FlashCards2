@@ -19,7 +19,6 @@ public class Main {
 
         if (importFile != null) manager.importF(importFile);
 
-        // Main application loop
         String command;
         do {
             manager.printLogMessage("\nInput the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):");
@@ -28,10 +27,8 @@ public class Main {
             controller.processCommand(command);
         } while (!"exit".equals(command));
 
-        // Export if requested
         if (exportFile != null) {
             manager.export(exportFile);
         }
-
     }
 }
