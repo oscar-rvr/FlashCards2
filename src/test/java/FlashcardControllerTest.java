@@ -1,8 +1,8 @@
+import java.util.Scanner;
 import org.example.FlashcardController;
 import org.example.FlashcardManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Scanner;
 import static org.mockito.Mockito.*;
 
 class FlashcardControllerTest {

@@ -1,33 +1,33 @@
 package org.example;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.*;
-import java.io.BufferedWriter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
-import java.io.InputStream;
-
+import java.util.*;
 
 public class FlashcardManager {
     private static Random rand = new Random();
     private Map<String,Flashcard> flashcards;
     private List<String> logList = new ArrayList<>();
-    public FlashcardManager(){
+
+    public FlashcardManager() {
                 this.flashcards = new HashMap<>();
-            }
+    }
 
-
-
-    public void addCard(String term, String definition, int mistakes){
+    public void addCard(String term, String definition, int mistakes) {
         if (term == null || definition == null) {
             throw new IllegalArgumentException("Term and definition cannot be null");
         }
+
         if (mistakes < 0) {
             throw new IllegalArgumentException("Mistakes cannot be negative");
         }
+
         Flashcard card = new Flashcard(term, definition, mistakes);
         flashcards.put(term, card);
     }
@@ -44,27 +44,27 @@ public class FlashcardManager {
         return false;
     }
 
-    public boolean existDefinition(String definition){
-        for(Map.Entry<String, Flashcard> entry : flashcards.entrySet()){
-            if (entry.getValue().getDefinition().equals(definition)){
+    public boolean existDefinition(String definition) {
+        for(Map.Entry<String, Flashcard> entry : flashcards.entrySet()) {
+            if (entry.getValue().getDefinition().equals(definition)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void removeCard(String term){
-        if (flashcards.containsKey(term)){
+    public void removeCard(String term) {
+        if (flashcards.containsKey(term)) {
             flashcards.remove(term);
             printLogMessage("The card has been removed.");
         } else {
                  printLogMessage("Can't remove \"" + term + "\": there is no such card.");
-            }
         }
+    }
 
     public void askCard(int times) {
         Scanner scanner = new Scanner(System.in, "UTF-8");
-        for (int i =0; i< times; i++){
+        for (int i =0; i< times; i++) {
             String[] terms = flashcards.keySet().toArray(new String[0]);
             String randomTerm = terms[rand.nextInt(terms.length)];
             Flashcard card = flashcards.get(randomTerm);
@@ -74,11 +74,11 @@ public class FlashcardManager {
             if (userAnswer.equals(card.getDefinition())) {
                 printLogMessage("Correct!");
             } else if(!whereDefinition(userAnswer).isEmpty()) {
-                printLogMessage("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
-                card.sumMistake();
-                }else{
-                     printLogMessage("Wrong. The right answer is \"" + card.getDefinition() + "\".");
+                    printLogMessage("Wrong. The right answer is \""+card.getDefinition()+"\", but your definition is correct for \""+whereDefinition(userAnswer)+"\".");
                     card.sumMistake();
+                } else {
+                     printLogMessage("Wrong. The right answer is \"" + card.getDefinition() + "\".");
+                     card.sumMistake();
                 }
         }
 

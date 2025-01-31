@@ -5,14 +5,13 @@ public class FlashcardController {
     private final FlashcardManager manager;
     private final Scanner scanner;
 
-
     public FlashcardController(FlashcardManager manager, Scanner scanner) {
         this.manager = manager;
         this.scanner = scanner;
     }
 
-    public void processCommand(String command){
-        switch (command){
+    public void processCommand(String command) {
+        switch (command) {
             case "add" -> handleAdd();
             case "remove" -> handleRemove();
             case "import" -> handleImport();
@@ -25,6 +24,7 @@ public class FlashcardController {
             default -> manager.printLogMessage("Unknown command");
         }
     }
+
     private void handleAdd() {
         manager.printLogMessage("The card:");
         String term = scanner.nextLine();
@@ -71,7 +71,7 @@ public class FlashcardController {
     private void handleAsk() {
         manager.printLogMessage("How many times to ask?");
         int times = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
         manager.saveLogMessage(String.valueOf(times));
         manager.askCard(times);
     }
@@ -82,6 +82,5 @@ public class FlashcardController {
         manager.saveLogMessage(filename);
         manager.writeLog(filename);
     }
-
 
 }
